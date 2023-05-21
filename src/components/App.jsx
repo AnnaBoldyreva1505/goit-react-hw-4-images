@@ -5,7 +5,6 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
 import { Searchbar } from './Searchbar/Searchbar';
 import { fetchImg } from '../api';
-import { HTTP_ERROR_MSG } from '../constants/constants';
 import { AppStyle } from './App.styled';
 
 export const App = () => {
@@ -42,7 +41,7 @@ export const App = () => {
       setImages(prevImages => [...prevImages, ...hits]);
       setError('');
     } catch (error) {
-      setError(HTTP_ERROR_MSG);
+      setError({ error });
     } finally {
       setIsLoading(false);
     }
@@ -64,16 +63,12 @@ export const App = () => {
       <Searchbar onSubmit={handleFormSubmit} />
 
       <ImageGallery images={images} />
-      {/* {isLoading && <Loader />}
-      {images.length !== 0 && images.length >= 12 && images.length < totalHits && !isLoading(
-        <Button onLoadMore={handleLoadMore} />
-      )} */}
 
       {isLoading && <Loader />}
       {images.length > 0 && images.length % 12 === 0 && !isLoading && (
         <Button onLoadMore={handleLoadMore} />
       )}
-
+      {error && <p>ERROR!</p>}
       <Toaster />
     </AppStyle>
   );
