@@ -24,14 +24,21 @@ const closeModal = e => {
       <ImageGalleryItemLi onClick={openModal}>
         <ImageGalleryItemImage src={src} alt={alt} />
       </ImageGalleryItemLi>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <ImageModal
           imgURL={src}
           alt={alt}
           isOpen={isModalOpen}
           onClose={closeModal}
         />
-      )}
+      )} */}
+
+<ImageModal
+          imgURL={src}
+          alt={alt}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
     </>
   );
 

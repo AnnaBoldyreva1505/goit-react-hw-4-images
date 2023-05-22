@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from './Loader/Loader';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -47,39 +47,18 @@ export const App = () => {
     getImg(searchQuery, page);
   }, [searchQuery, page]);
 
-  // useEffect(() => {
-  //   if (!searchQuery) {
-  //     return;
-  //   }
-  //   getImg(searchQuery, page);
-  // }, [searchQuery, page]);
-
-  // const getImg = async (searchQuery, page) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const { hits, totalHits } = await fetchImg(searchQuery, page);
-
-  //     if (hits.length === 0) {
-  //       toast.error(
-  //         'Sorry, there are no images matching your search query. Please try again.'
-  //       );
-  //       return;
-  //     }
-
-  //     if (page === 1) {
-  //       toast.success(`Hooray! We found ${totalHits} images!`);
-  //     }
-  //     setImages(prevImages => [...prevImages, ...hits]);
-  //     setError('');
-  //   } catch (error) {
-  //     setError({ error });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
+  const prevSearchQuery = useRef('');
+  // console.log(prevSearchQuery.current)
   const handleFormSubmit = searchQuery => {
+    if (searchQuery === prevSearchQuery.current && images.length > 0) {
+      toast.error(
+        `You are already viewing results for this query: "${searchQuery}"`
+      );
+
+      return;
+    }
     setSearchQuery(searchQuery);
+    prevSearchQuery.current = searchQuery;
     setImages([]);
     setPage(1);
     setIsLoading(false);

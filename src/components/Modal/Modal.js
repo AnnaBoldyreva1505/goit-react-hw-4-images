@@ -33,6 +33,6 @@ export const ImageModal = ({ isOpen, imgURL, alt, onClose }) => {
 ImageModal.propTypes = {
   imgURL: PropTypes.string,
   alt: PropTypes.string,
-  isOpen: PropTypes.func,
+  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
 };
