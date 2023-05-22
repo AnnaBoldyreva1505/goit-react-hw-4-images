@@ -16,36 +16,67 @@ export const App = () => {
   // const [totalHits, setTotalHits] = useState(0);
 
   useEffect(() => {
-    getImg(searchQuery, page);
-  }, [searchQuery, page]);
-
-  const getImg = async (searchQuery, page) => {
     if (!searchQuery) {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const { hits, totalHits } = await fetchImg(searchQuery, page);
+    const getImg = async (searchQuery, page) => {
+      setIsLoading(true);
+      try {
+        const { hits, totalHits } = await fetchImg(searchQuery, page);
 
-      if (hits.length === 0) {
-        toast.error(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        return;
-      }
+        if (hits.length === 0) {
+          toast.error(
+            'Sorry, there are no images matching your search query. Please try again.'
+          );
+          return;
+        }
 
-      if (page === 1) {
-        toast.success(`Hooray! We found ${totalHits} images!`);
+        if (page === 1) {
+          toast.success(`Hooray! We found ${totalHits} images!`);
+        }
+        setImages(prevImages => [...prevImages, ...hits]);
+        setError('');
+      } catch (error) {
+        setError({ error });
+      } finally {
+        setIsLoading(false);
       }
-      setImages(prevImages => [...prevImages, ...hits]);
-      setError('');
-    } catch (error) {
-      setError({ error });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    getImg(searchQuery, page);
+  }, [searchQuery, page]);
+
+  // useEffect(() => {
+  //   if (!searchQuery) {
+  //     return;
+  //   }
+  //   getImg(searchQuery, page);
+  // }, [searchQuery, page]);
+
+  // const getImg = async (searchQuery, page) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const { hits, totalHits } = await fetchImg(searchQuery, page);
+
+  //     if (hits.length === 0) {
+  //       toast.error(
+  //         'Sorry, there are no images matching your search query. Please try again.'
+  //       );
+  //       return;
+  //     }
+
+  //     if (page === 1) {
+  //       toast.success(`Hooray! We found ${totalHits} images!`);
+  //     }
+  //     setImages(prevImages => [...prevImages, ...hits]);
+  //     setError('');
+  //   } catch (error) {
+  //     setError({ error });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handleFormSubmit = searchQuery => {
     setSearchQuery(searchQuery);
