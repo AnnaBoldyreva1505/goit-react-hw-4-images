@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from './Loader/Loader';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -13,7 +13,6 @@ export const App = () => {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
-  // const [totalHits, setTotalHits] = useState(0);
 
   useEffect(() => {
     if (!searchQuery) {
@@ -47,18 +46,16 @@ export const App = () => {
     getImg(searchQuery, page);
   }, [searchQuery, page]);
 
-  const prevSearchQuery = useRef('');
-  // console.log(prevSearchQuery.current)
-  const handleFormSubmit = searchQuery => {
-    if (searchQuery === prevSearchQuery.current && images.length > 0) {
+
+  const handleFormSubmit = value => {
+    if (searchQuery === value) {
       toast.error(
         `You are already viewing results for this query: "${searchQuery}"`
       );
 
       return;
     }
-    setSearchQuery(searchQuery);
-    prevSearchQuery.current = searchQuery;
+    setSearchQuery(value);
     setImages([]);
     setPage(1);
     setIsLoading(false);
